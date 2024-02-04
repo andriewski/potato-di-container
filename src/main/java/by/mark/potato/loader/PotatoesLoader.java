@@ -17,18 +17,22 @@ import static java.util.Objects.requireNonNull;
 public class PotatoesLoader {
 
     public static List<? extends Class<?>> findClasses(String packageName) {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        URL packageUrl = requireNonNull(classLoader.getResource(packageName.replace('.', '/')));
-
-        try (Stream<Path> packagePaths = Files.walk(Paths.get(packageUrl.toURI()))) {
+        try (Stream<Path> packagePaths = Files.walk(packageToPath(packageName))) {
             return packagePaths
                     .filter(PotatoesLoader::isJavaClass)
                     .map(path -> pathToClassName(path, packageName))
                     .map(PotatoesLoader::loadClass)
                     .toList();
         } catch (IOException | URISyntaxException e) {
-            throw new PotatoException(e);
+            throw new PotatoException("Can not load classes", e);
         }
+    }
+
+    private static Path packageToPath(String packageName) throws URISyntaxException {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        URL packageUrl = requireNonNull(classLoader.getResource(packageName.replace('.', '/')));
+
+        return Paths.get(packageUrl.toURI());
     }
 
     private static boolean isJavaClass(Path path) {
