@@ -15,7 +15,6 @@
 
         <junit.version>5.10.1</junit.version>
         <maven-surefire.version>3.2.5</maven-surefire.version>
-        <lombok.version>1.18.30</lombok.version>
     </properties>
 
     <dependencies>
