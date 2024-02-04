@@ -16,8 +16,10 @@ import static java.util.Objects.requireNonNull;
 
 public class PotatoesLoader {
 
+    private static final int MAX_DEPTH = 1000;
+
     public static List<? extends Class<?>> findClasses(String packageName) {
-        try (Stream<Path> packagePaths = Files.walk(packageToPath(packageName))) {
+        try (Stream<Path> packagePaths = Files.walk(packageToPath(packageName), MAX_DEPTH)) {
             return packagePaths
                     .filter(PotatoesLoader::isJavaClass)
                     .map(path -> pathToClassName(path, packageName))
