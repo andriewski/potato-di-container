@@ -1,4 +1,4 @@
-package by.mark.potato.runner;
+package by.mark.potato.loader;
 
 import by.mark.potato.exception.PotatoException;
 
@@ -10,24 +10,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-public class PotatoItemRunner {
+public class PotatoesLoader {
 
-    public static List<Class<?>> findClasses(String packageName) {
+    public static List<? extends Class<?>> findClasses(String packageName) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL packageUrl = requireNonNull(classLoader.getResource(packageName.replace('.', '/')));
 
-        try (Stream<Path> pathStream = Files.walk(Paths.get(packageUrl.toURI()))) {
-            return pathStream
+        try (Stream<Path> packagePaths = Files.walk(Paths.get(packageUrl.toURI()))) {
+            return packagePaths
                     .filter(Files::isRegularFile)
                     .filter(path -> path.toString().endsWith(".class"))
                     .map(path -> pathToClassName(path, packageName))
-                    .map(PotatoItemRunner::loadClass)
-                    .collect(Collectors.toList());
+                    .map(PotatoesLoader::loadClass)
+                    .toList();
         } catch (IOException | URISyntaxException e) {
             throw new PotatoException(e);
         }

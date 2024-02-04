@@ -2,7 +2,7 @@ package by.mark.potato.context;
 
 import by.mark.potato.annotation.Potato;
 import by.mark.potato.exception.PotatoException;
-import by.mark.potato.runner.PotatoItemRunner;
+import by.mark.potato.loader.PotatoesLoader;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -18,13 +18,13 @@ public class PotatoApplication {
     static final ConcurrentMap<String, Object> POTATOES = new ConcurrentHashMap<>();
 
     public static void run(Class<?> clazz) {
-        List<Class<?>> potentialPotatoClasses = PotatoItemRunner.findClasses(clazz.getPackageName());
+        List<? extends Class<?>> potentialPotatoClasses = PotatoesLoader.findClasses(clazz.getPackageName());
         loadPotatoes(potentialPotatoClasses);
         plantPotatoes();
         System.out.println("All potatoes has been plant");
     }
 
-    private static void loadPotatoes(List<Class<?>> potentialPotatoClasses) {
+    private static void loadPotatoes(List<? extends Class<?>> potentialPotatoClasses) {
         try {
             for (Class<?> foundedClazz : potentialPotatoClasses) {
                 if (!foundedClazz.isAnnotationPresent(Potato.class)) {
@@ -45,8 +45,7 @@ public class PotatoApplication {
         POTATO_CLASSES.forEach(clazz ->
                 Stream.of(clazz.getDeclaredFields())
                         .filter(field -> POTATOES.containsKey(field.getName()))
-                        .forEach(field -> injectPotato(clazz, field))
-        );
+                        .forEach(field -> injectPotato(clazz, field)));
     }
 
     private static void injectPotato(Class<?> clazz, Field field) {
