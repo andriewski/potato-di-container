@@ -22,14 +22,17 @@ public class PotatoesLoader {
 
         try (Stream<Path> packagePaths = Files.walk(Paths.get(packageUrl.toURI()))) {
             return packagePaths
-                    .filter(Files::isRegularFile)
-                    .filter(path -> path.toString().endsWith(".class"))
+                    .filter(PotatoesLoader::isJavaClass)
                     .map(path -> pathToClassName(path, packageName))
                     .map(PotatoesLoader::loadClass)
                     .toList();
         } catch (IOException | URISyntaxException e) {
             throw new PotatoException(e);
         }
+    }
+
+    private static boolean isJavaClass(Path path) {
+        return Files.isRegularFile(path) && path.toString().endsWith(".class");
     }
 
     private static String pathToClassName(Path path, String packageName) {
