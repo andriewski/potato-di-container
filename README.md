@@ -1,6 +1,6 @@
 # Let's plant some potatoes
 
-![alt text](docs/planting-potatoes.jpg)
+![Planting potatoes](docs/planting-potatoes.jpg)
 
 It's an **educational project** that show people how might the simplest DI container work
 
