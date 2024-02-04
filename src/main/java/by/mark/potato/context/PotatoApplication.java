@@ -37,7 +37,7 @@ public class PotatoApplication {
                 POTATO_CLASSES.add(foundedClazz);
             }
         } catch (Exception e) {
-            throw new PotatoException("Something went wrong", e);
+            throw new PotatoException("Something went wrong during loading potatoes", e);
         }
     }
 
@@ -54,7 +54,7 @@ public class PotatoApplication {
             Object potatoInstance = POTATOES.get(clazz.getAnnotation(Potato.class).name());
             field.set(potatoInstance, POTATOES.get(field.getName()));
         } catch (IllegalAccessException e) {
-            throw new PotatoException("Something went wrong", e);
+            throw new PotatoException("Can not inject potato", e);
         }
     }
 
