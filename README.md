@@ -2,7 +2,7 @@
 
 ![alt text](docs/planting-potatoes.jpg)
 
-It's educational project that show people how might the simplest DI container work
+It's an **educational project** that show people how might the simplest DI container work
 
 So-called **@Bean**'s are substituted with **@Potato**
 
@@ -11,4 +11,4 @@ by direct field injection
 
 Just FYI: field injection is an anti-pattern, everything is done just for educational sake
 
-Example of usage you can find in **tests** folder
+You can find an example of usage in **tests** folder
