@@ -1,14 +1,8 @@
 package by.mark.potato.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+public record Product(
+        String name,
+        User user
+) {
 
-@Data
-@AllArgsConstructor
-@SuppressWarnings("unused")
-public class Product {
-
-    private String name;
-
-    private User user;
 }

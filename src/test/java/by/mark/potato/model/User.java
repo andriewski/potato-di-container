@@ -1,11 +1,5 @@
 package by.mark.potato.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+public record User(String name) {
 
-@Data
-@AllArgsConstructor
-public class User {
-
-    private String name;
 }
